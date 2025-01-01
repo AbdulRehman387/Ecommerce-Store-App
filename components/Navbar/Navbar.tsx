@@ -110,7 +110,7 @@ const Navbar = () => {
           </div>
           <div className=''>
             <div style={{ display: session ? "none" : "" }}>
-              <div onClick={hideSidebar} className="py-1"><Link className='flex items-center gap-x-2' href={"/login"}><TbLogin2 />Login</Link></div>
+              <div onClick={hideSidebar} className="py-1"><Link className='flex items-center gap-x-2' href={"/Login"}><TbLogin2 />Login</Link></div>
             </div>
             <div style={{ display: session ? "" : "none" }}>
             <div className='flex items-center mb-5 w-[100vw]'>
