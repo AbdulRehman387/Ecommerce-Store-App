@@ -12,7 +12,7 @@ const doubleProtectedPaths = [
 
 export async function middleware(req) {
   // Manually extract the session token from cookies
-  const sessionToken = req.cookies.get("__Secure-next-auth.session-token") || req.cookies.get("next-auth.session-token");
+  const sessionToken = req.cookies.getAll();
 
   // If sessionToken is available, pass it to getToken
   const token = sessionToken
@@ -20,7 +20,7 @@ export async function middleware(req) {
         req,
         secret: process.env.NEXTAUTH_SECRET,
         secureCookie: process.env.NODE_ENV === "production",
-        token: sessionToken, // Pass the cookie directly if found
+        token: sessionToken[2].value, // Pass the cookie directly if found
       })
     : null;
 
@@ -33,7 +33,9 @@ export async function middleware(req) {
 
   // Handle single-protected routes (user must be logged in)
   if (singleProtectedPaths.includes(pathname)) {
+    console.log(token, "this is thiejf token");
     if (!token) {
+      
       console.log("User not logged in, redirecting to /login.");
       return NextResponse.redirect(new URL("/login", req.url));
     }
