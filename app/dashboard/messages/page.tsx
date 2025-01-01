@@ -7,8 +7,10 @@ const Messages = (props: any) => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-            const res2 = await fetch("/api/contact")
-            const result = await res2.json()
+            const res = await fetch(`/api/contact`, {
+                cache: 'no-store',
+            });
+            const result = await res.json()
             setMessages(result)
         }
         fetchMessages()

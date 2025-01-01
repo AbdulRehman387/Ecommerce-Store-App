@@ -42,8 +42,10 @@ const Users = (props: any) => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const res2 = await fetch(`/api/getUsers`)
-            const result = await res2.json()
+            const res = await fetch(`/api/getUsers`, {
+                cache: 'no-store',
+            });
+            const result = await res.json()
             setUsers(result)
         }
         fetchUsers()

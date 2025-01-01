@@ -8,7 +8,9 @@ import { toast } from 'react-toastify'
 const Page = () => {
   const [products, setProducts] = useState([])
   useEffect(() => {
-    fetch('/api/products')
+    fetch('/api/products', {
+      cache: 'no-store',
+  })
       .then(res => res.json())
       .then(json => setProducts(json))
   }, [])

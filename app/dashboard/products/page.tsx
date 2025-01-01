@@ -44,8 +44,10 @@ const Products = (props: any) => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const res2 = await fetch("/api/products")
-            const result = await res2.json()
+            const res = await fetch(`/api/products`, {
+                cache: 'no-store',
+            });
+            const result = await res.json()
             setProducts(result)
         }
         fetchProducts()
