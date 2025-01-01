@@ -5,7 +5,7 @@ import FaGitHub from "react-icons"
 import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-const Login = () => {
+const Page = () => {
   const [user, setUser] = useState({
     email: "",
     password: ""
@@ -118,4 +118,4 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default Page;

@@ -1,30 +1,32 @@
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 // Define paths for single and double protection
 const singleProtectedPaths = ['/cart', '/checkout'];
 const doubleProtectedPaths = ['/dashboard'];
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+export async function middleware(req) {
+  // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const localCookie = req.cookies.has("__Secure-next-auth.session-token")
+  const vercelCookie = req.cookies.has("next-auth.session-token")
+  const isLogin = localCookie || vercelCookie
 
   const { pathname } = req.nextUrl;
 
   // Check for single protected pages (user must be logged in)
   if (singleProtectedPaths.includes(pathname)) {
-    if (!token) {
+    if (!isLogin) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
 
   // Check for double protected page (user must be logged in and be an admin)
   if (doubleProtectedPaths.includes(pathname)) {
-    if (!token) {
+    if (!isLogin) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
-    if (!token.isAdmin) {
+    if (!isLogin.isAdmin) {
       return NextResponse.redirect(new URL('/', req.url));
     }
   }

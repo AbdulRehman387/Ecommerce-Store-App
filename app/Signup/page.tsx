@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { userSchema } from '@/schema/schemas';
 
-const Signup = () => {
+const Page = () => {
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -158,4 +158,4 @@ const Signup = () => {
   );
 }
 
-export default Signup;
+export default Page;

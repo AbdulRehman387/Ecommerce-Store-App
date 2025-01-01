@@ -19,7 +19,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Omega Store",
+  title: "Omega Mart",
   description: "This is an e-commerce store",
 };
 
