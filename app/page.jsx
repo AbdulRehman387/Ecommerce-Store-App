@@ -3,49 +3,29 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MdArrowForward } from "react-icons/md";
 import { getSession } from 'next-auth/react';
+import { toast } from 'react-toastify'
 
 const Page = () => {
   const [products, setProducts] = useState([])
-  useEffect(()=>{
-    fetch('https://fakestoreapi.com/products')
+  useEffect(() => {
+    fetch('/api/products')
       .then(res => res.json())
       .then(json => setProducts(json))
-      const fetchSession = async()=>{
-        const session = await getSession()
-        console.log(session);
-        if(session){
-          if (session.user.provider === "github") {
-            const response = await fetch('/api/signup', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                username: session.user.name,
-                email: session.user.email,
-                password: null,
-                provider: session.user.provider
-              }),
-            });
-          }
-        }
-      }
-      fetchSession()
-  },[])
+  }, [])
 
-  const onClickHandler = async(id:number)=>{
-    console.log(id);
-    
+  const onClickHandler = async (id) => {
+    toast.success('Item added to cart', {
+      position: "top-right",
+      autoClose: 1000, // Closes after 3 seconds
+    });
     const session = await getSession()
-    const result = await fetch(`/api/users?email=${session?.user?.email}`)
-    const temp = await result.json()
     const response = await fetch('/api/cart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        userId: temp,
+        userId: session?.user?.id,
         productId: id
       }),
     });
@@ -80,9 +60,9 @@ const Page = () => {
               <h3 className="text-3xl text-gray-100 hover:text-white font-normal absolute -bottom-10 group-hover:bottom-[45%] transition-all ease-in-out duration-500 tablet:text-2xl">ELECTRONICS</h3>
             </div>
             <div className="flex flex-col items-center gap-y-5 w-[30%] h-auto text-center mobile:w-auto relative group">
-              <img className="rounded-lg flex-[1]" src="https://res.cloudinary.com/hz3gmuqw6/image/upload/c_fill,q_auto,w_750/f_auto/saving-money-on-groceries-phpf0594m" alt="Campus" />
-              <Link href={"/collections/groceries"} className='rounded-lg absolute top-0 w-full h-full bg-black opacity-0 group-hover:opacity-[0.4] transition-opacity ease-in-out duration-500'><div className=""></div></Link>
-              <h3 className="text-3xl text-gray-100 hover:text-white font-normal absolute -bottom-10 group-hover:bottom-[45%] transition-all ease-in-out duration-500 tablet:text-2xl">GROCERIES</h3>
+              <img className="rounded-lg flex-[1]" src="https://static01.nyt.com/images/2022/04/13/t-magazine/13tmag-raymond-slide-K086/13tmag-raymond-slide-K086-superJumbo.jpg" alt="Campus" />
+              <Link href={"/collections/jewelery"} className='rounded-lg absolute top-0 w-full h-full bg-black opacity-0 group-hover:opacity-[0.4] transition-opacity ease-in-out duration-500'><div className=""></div></Link>
+              <h3 className="text-3xl text-gray-100 hover:text-white font-normal absolute -bottom-10 group-hover:bottom-[45%] transition-all ease-in-out duration-500 tablet:text-2xl">JEWELRY</h3>
             </div>
           </div>
         </div>
@@ -95,9 +75,9 @@ const Page = () => {
         </div>
         <div className='grid grid-cols-4 justify-center items-center gap-x-5 gap-y-10 laptop:grid-cols-3 tablet:grid-cols-2 mobile:grid-cols-2 mobile:gap-x-3'>
           {
-            products!.map((item: any) => {
+            products?.map((item) => {
               return (
-                <div key={item.id}className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
+                <div key={item.id} className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
                   <div className="relative flex justify-center">
                     <img className="h-[200px]" src={item.image} alt="Product Image" />
                     <div className="absolute bottom-0 left-0 bg-red-500 text-white px-3 py-0.5 m-2 rounded-full text-sm">Sale
@@ -107,9 +87,9 @@ const Page = () => {
                     <h3 className="text-lg font-medium mb-2 mobile:text-sm">Silicon Power 256GB SSD</h3>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-lg mobile:text-sm">${item.price}</span>
-                      <div className='flex justify-center items-center cursor-pointer'>
-                        <h3 onClick={()=>onClickHandler(item.id)} className='mobile text-sm'>Add to cart</h3>
-                        <MdArrowForward className='text-2xl mobile:text-xl' />
+                      <div className='flex justify-center items-center cursor-pointer group'>
+                        <button onClick={() => onClickHandler(item.id)} className='mobile text-sm group-hover:text-gray-900 group-active:text-gray-400'>Add to cart</button>
+                        <MdArrowForward className='text-2xl mobile:text-xl group-hover:translate-x-1.5 group-hover:scale-110 transition-all duration-100' />
                       </div>
                     </div>
                   </div>

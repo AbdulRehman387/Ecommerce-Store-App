@@ -13,6 +13,7 @@ const Login = () => {
   const router = useRouter()
   
   const [error, setError] = useState("")
+  const [loader, setLoader] = useState(false)
 
   const onChangeHandler = (e:any)=>{
     setError("")
@@ -21,6 +22,7 @@ const Login = () => {
   
   const onClickHandler = async() => {
     // Login code
+    setLoader(true)
     const result: any = await signIn("credentials", {
       redirect: false, ...user
     })
@@ -30,6 +32,7 @@ const Login = () => {
     else {
       console.log("error");
       setError("email or password doesn't match")
+      setLoader(false)
     }
   }
   return (
@@ -61,7 +64,7 @@ const Login = () => {
       </div>
       <h3 className="text-red-500 mb-3 relative right-14 mobile:right-0">{error}</h3>
         <button onClick={onClickHandler} className='bg-black text-white p-x-4 py-3 w-40 max-w-xs rounded-sm duration-300 hover:scale-105'>
-          Login
+          {loader ? "Logging in...":"Login"}
         </button>
       <div className='mt-4'>
         <p className='text-gray-700'>

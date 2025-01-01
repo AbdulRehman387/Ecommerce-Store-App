@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { userSchema } from '@/schema/schemas';
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -11,6 +12,7 @@ const Signup = () => {
     password: ""
   })
 
+  const [loader, setLoader] = useState(false)
   const router = useRouter()
 
   const [error, setError] = useState("")
@@ -21,34 +23,46 @@ const Signup = () => {
   }
 
   const onClickHandler = () => {
-    fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...user, provider: "credentials" }),
-    })
-      .then((res) => res.json())
+    userSchema.validate(user, { abortEarly: false })
       .then((res) => {
-        if (res.message === "error") {
-          setError("user already exists")
-        }
-        else {
-          const login = async () => {
-            const result: any = await signIn("credentials", {
-              redirect: false, ...user
-            })
-            if (result.ok) {
-              router.push("/")
+        setLoader(true)
+        fetch("/api/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({...user, provider:"credentials", isAdmin:false})
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.message === "success") {
+              const login = async () => {
+                const result = await signIn("credentials", {
+                  redirect: false,
+                  email: user.email,
+                  password: user.password
+                })
+                if (result!.ok) {
+                  router.push("/")
+                  setUser({
+                    email: "",
+                    username: "",
+                    password: ""
+                  })
+                }
+                else {
+                  console.log("error");
+                }
+              }
+              login()
             }
-            else {
-              console.log("error");
-              setError("email or password doesn't match")
+            else if (res.message === "error") {
+              setLoader(false)
+              setError("email already exists")
             }
-          }
-          login()
-        }
+          })
       })
+      .catch((err) => setError(err.errors[0]))
   }
   return (
     <div className='flex flex-col justify-center items-center h-screen bg-gray-100 px-4'>
@@ -89,9 +103,9 @@ const Signup = () => {
           required // Mark as required
         />
       </div>
-      <h3 className="text-red-500 mb-3 relative right-28 mobile:right-0">{error}</h3>
+      <h3 className="text-red-500 mb-3">{error}</h3>
       <button onClick={onClickHandler} className='bg-black text-white px-4 py-3 w-40 max-w-xs rounded-sm duration-300 hover:scale-105'>
-        Sign Up
+        {loader ? "Signing up..." : "Sign Up"}
       </button>
       <div className='mt-4'>
         <p className='text-gray-700'>
