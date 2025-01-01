@@ -4,7 +4,7 @@ import GithubProvider from "next-auth/providers/github";
 import { pool } from "@/config/dbConfig"
 
 const handler = NextAuth({
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: "ksdgjdjg",
     providers: [
         CredentialsProvider({
             name: "credentials",
