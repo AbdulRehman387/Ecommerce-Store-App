@@ -94,7 +94,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Link style={{ display: session ? "none" : "" }} href={"/login"}><TbLogin2 className='text-[30.5px] cursor-pointer mobile:hidden' /></Link>
+            <Link style={{ display: session ? "none" : "" }} href={"/Login"}><TbLogin2 className='text-[30.5px] cursor-pointer mobile:hidden' /></Link>
             <Link style={{ display: session ? "" : "none" }} href={"/cart"}><HiOutlineShoppingBag className='text-[27px] cursor-pointer' /></Link>
             <FaBars onClick={showSidebar} className="text-2xl hidden mobile:block cursor-pointer" />
           </div>

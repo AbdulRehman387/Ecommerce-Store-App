@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 // Define paths for single and double protection
-const singleProtectedPaths = ['/cart', '/checkout'];
-const doubleProtectedPaths = ['/dashboard'];
+const singleProtectedPaths = ['/cart', '/checkout, /orders'];
+const doubleProtectedPaths = ['/dashboard/orders', '/dashboard/products, /dashboard/users, /dashboard/messages'];
 
 export async function middleware(req) {
   // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -36,5 +35,5 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/cart', '/checkout', '/dashboard'],
+  matcher: ['/cart', '/checkout', '/dashboard/:path'],
 };
