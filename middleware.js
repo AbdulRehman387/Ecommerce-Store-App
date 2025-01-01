@@ -11,13 +11,18 @@ const doubleProtectedPaths = [
 ];
 
 export async function middleware(req) {
-  // Explicitly log and handle token retrieval
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-    secureCookie: process.env.NODE_ENV === "production", // Ensure secure cookies in production
-    cookieName: "__Secure-next-auth.session-token", // Explicit cookie name for production
-  });
+  // Manually extract the session token from cookies
+  const sessionToken = req.cookies.get("__Secure-next-auth.session-token") || req.cookies.get("next-auth.session-token");
+
+  // If sessionToken is available, pass it to getToken
+  const token = sessionToken
+    ? await getToken({
+        req,
+        secret: process.env.NEXTAUTH_SECRET,
+        secureCookie: process.env.NODE_ENV === "production",
+        token: sessionToken, // Pass the cookie directly if found
+      })
+    : null;
 
   const { pathname } = req.nextUrl;
 
