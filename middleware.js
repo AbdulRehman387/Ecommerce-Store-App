@@ -10,6 +10,7 @@ const doubleProtectedPaths = [
 ];
 
 export async function middleware(req) {
+  console.log('Redirect URI:', req.url);
 
   const sessionToken = req.cookies.get("__Secure-next-auth.session-token") || req.cookies.get("next-auth.session-token");
 
