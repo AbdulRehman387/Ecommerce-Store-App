@@ -6,6 +6,7 @@ const singleProtectedPaths = ['/cart', '/checkout, /orders'];
 const doubleProtectedPaths = ['/dashboard/orders', '/dashboard/products, /dashboard/users, /dashboard/messages'];
 
 export async function middleware(req) {
+  console.log("Cookies in Production are these:", req.cookies.getAll());
   const isLogin = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
