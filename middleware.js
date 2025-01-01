@@ -1,39 +1,49 @@
-import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 // Define paths for single and double protection
-const singleProtectedPaths = ['/cart', '/checkout, /orders'];
-const doubleProtectedPaths = ['/dashboard/orders', '/dashboard/products, /dashboard/users, /dashboard/messages'];
+const singleProtectedPaths = ["/cart", "/checkout", "/orders"];
+const doubleProtectedPaths = [
+  "/dashboard/orders",
+  "/dashboard/products",
+  "/dashboard/users",
+  "/dashboard/messages",
+];
 
 export async function middleware(req) {
-  const isLogin = await getToken({
+  // Explicitly log and handle token retrieval
+  const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
     secureCookie: process.env.NODE_ENV === "production", // Ensure secure cookies in production
+    cookieName: "__Secure-next-auth.session-token", // Explicit cookie name for production
   });
-  // const localCookie = req.cookies.has("__Secure-next-auth.session-token")
-  // const vercelCookie = req.cookies.has("next-auth.session-token")
-  // const isLogin = localCookie || vercelCookie
-  
+
   const { pathname } = req.nextUrl;
-  
-  // Check for single protected pages (user must be logged in)
+
+  // Log all cookies for debugging in production
+  if (process.env.NODE_ENV === "production") {
+    console.log("Cookies in Production:", req.cookies.getAll());
+  }
+
+  // Handle single-protected routes (user must be logged in)
   if (singleProtectedPaths.includes(pathname)) {
-    console.log("Cookies in Production are these:", req.cookies.getAll());
-    console.log(isLogin, " this is is login idahshcoahgij");
-    if (!isLogin) {
-      return NextResponse.redirect(new URL('/login', req.url));
+    if (!token) {
+      console.log("User not logged in, redirecting to /login.");
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   }
 
-  // Check for double protected page (user must be logged in and be an admin)
+  // Handle double-protected routes (user must be logged in and an admin)
   if (doubleProtectedPaths.includes(pathname)) {
-    if (!isLogin) {
-      return NextResponse.redirect(new URL('/login', req.url));
+    if (!token) {
+      console.log("User not logged in, redirecting to /login.");
+      return NextResponse.redirect(new URL("/login", req.url));
     }
 
-    if (!isLogin.isAdmin) {
-      return NextResponse.redirect(new URL('/', req.url));
+    if (!token.isAdmin) {
+      console.log("User is not an admin, redirecting to /.");
+      return NextResponse.redirect(new URL("/", req.url));
     }
   }
 
@@ -42,5 +52,13 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: ['/cart', '/checkout', '/dashboard/orders', '/dashboard/products', '/dashboard/users', '/dashboard/messages'],
+  matcher: [
+    "/cart",
+    "/checkout",
+    "/orders",
+    "/dashboard/orders",
+    "/dashboard/products",
+    "/dashboard/users",
+    "/dashboard/messages",
+  ],
 };
