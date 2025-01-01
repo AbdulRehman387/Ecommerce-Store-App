@@ -37,12 +37,15 @@ const Orders = (props: any) => {
 
     useEffect(() => {
         const fetchOrders = async () => {
-            const res2 = await fetch(`/api/getOrders`)
-            const result = await res2.json()
-            setOrders(result)
-        }
-        fetchOrders()
-    }, [])
+            const res = await fetch(`/api/getOrders`, {
+                cache: 'no-store',
+            });
+            const result = await res.json();
+            setOrders(result);
+        };
+        fetchOrders();
+    }, []);
+    
 
     const onClickStatus = async (status: string, id: string) => {
         const res = await fetch(`/api/updateOrderStatus`, {
