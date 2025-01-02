@@ -6,6 +6,7 @@ import { orderSchema } from "@/schema/schemas";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
+let copy = []
 const Checkout = () => {
   const delivery = 10
   const [loader, setLoader] = useState(false)
@@ -31,6 +32,7 @@ const Checkout = () => {
     result = result.map((item) => {
       return { ...item, quantity: 1 }
     })
+    copy = result
     console.log(result);
     setProducts(result)
     let tempPrice = 0
@@ -50,10 +52,14 @@ const Checkout = () => {
 
   const plus = (id) => {
     let temp = []
-    temp = products.map((item) => {
+    temp = products.map((item, i) => {
       if (item.id === id) {
-        item.quantity += 1
-        return item
+        setPrice(price + copy[i].price)
+        return {
+          ...item,
+          price: item.price + copy[i].price,
+          quantity: item.quantity + 1,
+        };
       }
       return item
     })
@@ -61,11 +67,17 @@ const Checkout = () => {
   }
   const minus = (id) => {
     let temp = []
-    temp = products.map((item) => {
+    temp = products.map((item, i) => {
       if (item.id === id) {
+        console.log(copy, "this is the log");
         if (!(item.quantity === 1)) {
-          item.quantity -= 1
-          return item
+          
+          setPrice(price - copy[i].price)
+          return {
+            ...item,
+            price: item.price - copy[i].price,
+            quantity: item.quantity - 1,
+          };
         }
       }
       return item
@@ -170,7 +182,7 @@ const Checkout = () => {
           <h2 className="text-4xl font-semibold mb-8">Order Summary</h2>
           <div className="space-y-4 h-[335px] overflow-y-scroll">
             {products.map((product, i) => (
-              <div key={product.id} className="flex">
+              <div key={product.id} className="flex items-center">
                 <div className="flex w-[80%] gap-x-2 tablet:w-[90%] mobile:w-[90%]">
                   <img
                     src={product.image}
@@ -179,33 +191,21 @@ const Checkout = () => {
                   />
                   <div className="">
                     <p className="font-semibold">{product.title}</p>
-                    <p className="text-gray-600">${product.price}</p>
+                    <p className="text-gray-800 font-semibold text-lg mobile:text-base">${copy[i]?.price}<span className="font-semibold text-gray-600 text-sm">{" x " + product.quantity + " = "}</span><span className="font-semibold text-gray-950 text-xl mobile:text-lg">${product.price.toFixed(2)}</span></p>
                   </div>
                 </div>
 
                 <div className="w-[20%] tablet:w-[100px] mobile:w-[100px]">
                   <button
                     onClick={() => minus(product.id)}
-                    style={{
-                      padding: "5px 10px",
-                      fontSize: "16px",
-                      cursor: "pointer",
-                      border: "1px solid #ccc",
-                      background: "#f0f0f0",
-                    }}
+                    className="px-[10px] py-[5px] text-base cursor-pointer border border-gray-300 bg-gray-200"
                   >
                     -
                   </button>
                   <span className="ml-1 mr-1 text-lg font-semibold">{products[i]?.quantity}</span>
                   <button
                     onClick={() => plus(product.id)}
-                    style={{
-                      padding: "5px 10px",
-                      fontSize: "16px",
-                      cursor: "pointer",
-                      border: "1px solid #ccc",
-                      background: "#f0f0f0",
-                    }}
+                    className="px-[10px] py-[5px] text-base cursor-pointer border border-gray-300 bg-gray-200"
                   >
                     +
                   </button>

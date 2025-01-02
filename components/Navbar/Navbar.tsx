@@ -125,10 +125,11 @@ const Navbar = () => {
               </div>
               <div className='flex flex-col'>
                 <div className='px-1 text-2xl py-0'>{session?.user?.name.length <= 16 ? (session?.user?.name) : (session?.user?.name.slice(0, 16) + "...")}</div>
-                <div className='px-1 py-0 text-lg font-medium text-gray-500'>{session?.user?.email.length <= 25 ? (session?.user?.email) : (session?.user?.email.slice(0, 25) + "...")}</div>
+                <div className='px-1 py-0 text-lg font-medium text-gray-500'>{session?.user?.email.length <= 22 ? (session?.user?.email) : (session?.user?.email.slice(0, 22) + "...")}</div>
               </div>
             </div>
-              <div onClick={hideSidebar} className="py-1"><Link className='flex items-center gap-x-2' href="/"><FiShoppingBag />Orders</Link></div>
+              <div onClick={hideSidebar} className="py-1"><Link className='flex items-center gap-x-2' href="/orders"><FiShoppingBag />Orders</Link></div>
+              <div onClick={hideSidebar}  style={{display: session?.user?.isAdmin ? "block":"none"}} className="py-1"><Link className='flex items-center gap-x-2' href="/dashboard/orders"><BiBarChartAlt2 />Dashboard</Link></div>
               <div onClick={() => signOut()} className="py-1"><Link className='flex items-center gap-x-2' href="/"><TbLogout2 />Logout</Link></div>
             </div>
           </div>
