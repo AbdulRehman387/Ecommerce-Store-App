@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import DashboardUsers from '@/components/DashboardUsers/DashboardUsers';
 
 const Users = async(props: any) => {
