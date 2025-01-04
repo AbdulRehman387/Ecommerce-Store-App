@@ -2,7 +2,7 @@ import DashboardUsers from '@/components/DashboardUsers/DashboardUsers';
 
 const Users = async(props: any) => {
 
-    const res = await fetch(`/api/getUsers`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/getUsers`, {
         cache: 'no-store',
     });
     const result = await res.json()
