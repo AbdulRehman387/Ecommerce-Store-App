@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { MdDelete } from 'react-icons/md'
 import { productSchema } from '@/schema/schemas'
+import { useRouter } from 'next/navigation'
 
 const Products = (props: any) => {
     const [error, setError] = useState("")
@@ -38,8 +39,10 @@ const Products = (props: any) => {
         price: "",
         image: ""
     })
+    const router = useRouter()
 
     useEffect(() => {
+        router.refresh()
         const fetchProducts = async () => {
             const res = await fetch(`/api/products`, {
                 cache: 'no-store',

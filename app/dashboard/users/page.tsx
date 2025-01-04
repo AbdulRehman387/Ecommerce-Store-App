@@ -33,14 +33,18 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { userSchema } from '@/schema/schemas';
+import { useRouter } from 'next/navigation'
+
 
 const Users = (props: any) => {
 
     const [orders, setOrders] = useState<any>([])
     const [users, setUsers] = useState<any>([])
     const [cart, setCart] = useState<any>([])
+    const router = useRouter()
 
     useEffect(() => {
+        router.refresh()
         const fetchUsers = async () => {
             const res = await fetch(`/api/getUsers`, {
                 cache: 'no-store',

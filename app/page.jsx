@@ -4,10 +4,14 @@ import Link from 'next/link'
 import { MdArrowForward } from "react-icons/md";
 import { getSession } from 'next-auth/react';
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
+
 
 const Page = () => {
   const [products, setProducts] = useState([])
+  const router = useRouter()
   useEffect(() => {
+    router.refresh()
     fetch('/api/products', {
       cache: 'no-store',
   })
