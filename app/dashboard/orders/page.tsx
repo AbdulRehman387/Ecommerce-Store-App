@@ -29,14 +29,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { useRouter } from 'next/navigation'
-
 
 const Orders = (props: any) => {
 
     const [orders, setOrders] = useState<any>([])
     const [products, setProducts] = useState<any>([])
-    const router = useRouter()
 
     const fetchOrders = async () => {
         const res = await fetch(`/api/getOrders`, {
@@ -48,7 +45,6 @@ const Orders = (props: any) => {
     useEffect(() => {
         fetchOrders();
     }, []);
-
 
     const onClickStatus = async (status: string, id: string) => {
         const res = await fetch(`/api/updateOrderStatus`, {

@@ -7,15 +7,12 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useRouter } from "next/navigation"
 
 const Messages = () => {
 
     const [messages, setMessages] = useState<any>([])
-    const router = useRouter()
 
     useEffect(() => {
-        router.refresh()
         const fetchMessages = async () => {
             const res = await fetch(`/api/contact`, {
                 cache: 'no-store',
