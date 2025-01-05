@@ -41,7 +41,7 @@ const Orders = (props: any) => {
     useEffect(() => {
         router.refresh()
         const fetchOrders = async () => {
-            const res = await fetch(`/api/getOrders`, {
+            const res = await fetch(`/api/testing`, {
                 cache: 'no-store',
             });
             const result = await res.json();
