@@ -39,7 +39,7 @@ const Orders = (props: any) => {
     const router = useRouter()
 
     const fetchOrders = async () => {
-        const res = await fetch(`/api/testing`, {
+        const res = await fetch(`/api/getOrders`, {
             cache: 'no-store',
         });
         const result = await res.json();
@@ -47,7 +47,7 @@ const Orders = (props: any) => {
     };
     useEffect(() => {
         fetchOrders();
-    }, [orders]);
+    }, []);
 
 
     const onClickStatus = async (status: string, id: string) => {

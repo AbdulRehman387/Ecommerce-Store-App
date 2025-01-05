@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { pool } from "@/config/dbConfig";
 
 export async function GET(req:any){
