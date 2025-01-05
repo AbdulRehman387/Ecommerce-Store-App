@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`h-screen bg-gray-100 border border-gray-300 text-black transition-width duration-300 ${isExpanded ? "w-56" : "w-16"
+      className={`h-screen bg-gray-100 border-r border-gray-300 text-black transition-width duration-300 ${isExpanded ? "w-56" : "w-16"
         } mobile:${isExpanded ? "w-44" : "w-16"} flex flex-col items-start`}
     >
       <button

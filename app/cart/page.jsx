@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 const Cart = () => {
   const [products, setProducts] = useState([]);
   const [price, setPrice] = useState(0)
-  const [error, setError] = useState("")
   const router = useRouter()
 
   const fetchProducts = async () => {
@@ -55,15 +54,7 @@ const Cart = () => {
     });
   }
   const onClickHandler = () => {
-    if (products.length === 0) {
-      toast.error('Cart is empty', {
-        position: "top-right",
-        autoClose: 3000, // Closes after 3 seconds
-      });
-    }
-    else {
       router.push("/checkout")
-    }
   }
 
   return (
@@ -101,7 +92,7 @@ const Cart = () => {
         )}
 
         <div className="flex justify-between items-center mt-6 space-y-4 md:space-y-0">
-          <div onClick={onClickHandler}><button className="bg-black text-white py-2 px-6 hover:scale-105 transition-all duration-100 ease-in-out w-full md:w-auto">
+          <div onClick={onClickHandler}><button disabled={products.length === 0} className={`text-white py-2 px-6 transition-all duration-100 ease-in-out w-full md:w-auto ${products.length === 0 ? "bg-gray-500 cursor-not-allowed":"bg-black hover:scale-[1.02]"}`}>
             Checkout
           </button></div>
           <div className="text-lg font-semibold text-right w-full md:w-auto">

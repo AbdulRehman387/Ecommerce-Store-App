@@ -18,6 +18,17 @@ import {
 import { userSchema } from '@/schema/schemas';
 
 const Users = (props: any) => {
+    const [orders, setOrders] = useState<any>([])
+    const [users, setUsers] = useState<any>([])
+    const [cart, setCart] = useState<any>([])
+    const [form, setForm] = useState({
+        username: "",
+        email: "",
+        password: "",
+        isAdmin: false,
+    })
+    const [error, setError] = useState("")
+    const [loader, setLoader] = useState(false)
 
     const fetchUsers = async () => {
         const res = await fetch(`/api/getUsers`, {
@@ -29,17 +40,7 @@ const Users = (props: any) => {
     useEffect(() => {
         fetchUsers();
     }, []);
-
-    const [orders, setOrders] = useState<any>([])
-    const [users, setUsers] = useState<any>([])
-    const [cart, setCart] = useState<any>([])
-    const [form, setForm] = useState({
-        username: "",
-        email: "",
-        password: "",
-        isAdmin: false,
-    })
-    const [error, setError] = useState("")
+    
     const onChangeHandler = async (e: any) => {
         setError("")
         setForm((prevForm: any) => ({
@@ -53,7 +54,8 @@ const Users = (props: any) => {
     }
     const onClickHandler = async () => {
         userSchema.validate(form, { abortEarly: false })
-            .then((res: any) => {
+        .then((res: any) => {
+                setLoader(true)
                 fetch("/api/signup", {
                     method: "POST",
                     headers: {
@@ -64,7 +66,8 @@ const Users = (props: any) => {
                     .then((res) => res.json())
                     .then((res) => {
                         if (res.message === "success") {
-                            // setUsers([...users, { ...res.user, email: form.email }])
+                            setLoader(false)
+                            setUsers([...users, { ...res.user, email: form.email }])
                             setForm({
                                 username: "",
                                 email: "",
@@ -77,6 +80,7 @@ const Users = (props: any) => {
                             });
                         }
                         else if (res.message === "error") {
+                            setLoader(false)
                             setError("email already exists")
                         }
                     })
@@ -332,7 +336,7 @@ const Users = (props: any) => {
                                 <h3 className="text-red-500 mb-3">{error}</h3>
                             </div>
                             <DialogFooter>
-                                <Button onClick={onClickHandler}>Add User</Button>
+                                <Button onClick={onClickHandler}>{loader ? "Adding user...":"Add user"}</Button>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>

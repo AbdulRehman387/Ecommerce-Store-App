@@ -30,6 +30,7 @@ import { productSchema } from '@/schema/schemas'
 
 const Products = (props: any) => {
     const [error, setError] = useState("")
+    const[loader, setLoader] = useState(false)
     const [products, setProducts] = useState<any>([])
     const [form, setForm] = useState<any>({
         title: "",
@@ -63,6 +64,7 @@ const Products = (props: any) => {
     const onClickHandler = async () => {
         productSchema.validate(form, { abortEarly: false })
             .then((res) => {
+                setLoader(true)
                 const finalForm = {
                     ...form,
                     price: parseFloat(form.price),
@@ -84,6 +86,7 @@ const Products = (props: any) => {
                             price: "",
                             image: ""
                         })
+                        setLoader(false)
                         toast.success('Product added', {
                             position: "top-right",
                             autoClose: 5000, // Closes after 5 seconds
@@ -234,7 +237,7 @@ const Products = (props: any) => {
                             <h3 className="text-red-500 mb-3">{error}</h3>
                         </div>
                         <DialogFooter>
-                            <Button onClick={onClickHandler}>Add Product</Button>
+                            <Button onClick={onClickHandler}>{loader ? "Adding product...":"Add product"}</Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>

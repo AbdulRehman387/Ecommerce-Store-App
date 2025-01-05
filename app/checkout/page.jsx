@@ -181,7 +181,7 @@ const Checkout = () => {
         <div className="bg-white px-6 rounded-md w-[40%] laptop:w-[50%] tablet:w-full mobile:w-full mobile:mt-10 tablet:mt-10">
           <h2 className="text-4xl font-semibold mb-8">Order Summary</h2>
           <div className="space-y-4 h-[335px] overflow-y-scroll">
-            {products.map((product, i) => (
+            {products.length !== 0 ? (products.map((product, i) => (
               <div key={product.id} className="flex items-center">
                 <div className="flex w-[80%] gap-x-2 tablet:w-[90%] mobile:w-[90%]">
                   <img
@@ -211,7 +211,7 @@ const Checkout = () => {
                   </button>
                 </div>
               </div>
-            ))}
+            ))):(<div className="text-center text-xl py-10 text-red-600">Cart is empty!</div>)}
           </div>
           <div className="w-full h-[1px] bg-black mt-5 mb-2"></div>
           <div className="text-lg flex flex-col gap-y-1">
@@ -229,7 +229,7 @@ const Checkout = () => {
             </div>
           </div>
             <h3 className="text-red-500 text-lg mt-1">{error}</h3>
-          <button onClick={onClickHandler} className='bg-black text-white px-4 py-3 w-full rounded-sm duration-300 hover:scale-[1.02] mt-2'>
+          <button disabled={products.length === 0} style={{backgroundColor: products.length === 0 ? "gray":"black"}} onClick={onClickHandler} className={`text-white px-4 py-3 w-full rounded-sm duration-300 ${products.length === 0 ? "bg-gray-500 cursor-not-allowed":"bg-black hover:scale-[1.02]"} mt-2`}>
             {loader ? "Placing Order..." : "Place Order"}
           </button>
         </div>
