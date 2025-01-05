@@ -38,17 +38,16 @@ const Orders = (props: any) => {
     const [products, setProducts] = useState<any>([])
     const router = useRouter()
 
+    const fetchOrders = async () => {
+        const res = await fetch(`/api/testing`, {
+            cache: 'no-store',
+        });
+        const result = await res.json();
+        setOrders(result);
+    };
     useEffect(() => {
-        router.refresh()
-        const fetchOrders = async () => {
-            const res = await fetch(`/api/testing`, {
-                cache: 'no-store',
-            });
-            const result = await res.json();
-            setOrders(result);
-        };
         fetchOrders();
-    }, []);
+    }, [orders]);
 
 
     const onClickStatus = async (status: string, id: string) => {
