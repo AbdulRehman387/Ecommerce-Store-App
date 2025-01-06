@@ -3,7 +3,7 @@ import { pool } from "@/config/dbConfig";
 
 export async function GET(req: any) {
     const connection = await pool.connect()
-    const result = await connection.query("SELECT * FROM products")
+    const result = await connection.query("SELECT * FROM products ORDER BY id ASC")
     return Response.json(result.rows)
 }
 

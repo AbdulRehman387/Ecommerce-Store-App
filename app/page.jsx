@@ -10,7 +10,7 @@ const Page = () => {
   useEffect(() => {
     fetch('/api/products', {
       cache: 'no-store',
-  })
+    })
       .then(res => res.json())
       .then(json => setProducts(json))
   }, [])
@@ -81,12 +81,12 @@ const Page = () => {
               return (
                 <div key={item.id} className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
                   <div className="relative flex justify-center">
-                    <img className="h-[200px]" src={item.image} alt="Product Image" />
+                    <Link href={`/products/${item.id}`}><img className="h-[200px]" src={item.image} alt="Product Image" /></Link>
                     <div className="absolute bottom-0 left-0 bg-red-500 text-white px-3 py-0.5 m-2 rounded-full text-sm">Sale
                     </div>
                   </div>
                   <div className="p-4 mobile:p-1">
-                    <h3 className="text-lg font-medium mb-2 mobile:text-sm">Silicon Power 256GB SSD</h3>
+                    <h3 className="text-lg font-medium mb-2 mobile:text-sm">{item.title.slice(0,22)+"..."}</h3>
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-lg mobile:text-sm">${item.price}</span>
                       <div className='flex justify-center items-center cursor-pointer group'>

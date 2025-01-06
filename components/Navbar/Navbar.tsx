@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
@@ -32,17 +33,7 @@ const Navbar = () => {
     setSidebar(false);
   }
 
-  const [session, setSession] = useState<any>(null)
-
-  useEffect(() => {
-    const fetchSession = async () => {
-      const temp = await getSession()
-      console.log(temp);
-
-      setSession(temp)
-    }
-    fetchSession()
-  }, [])
+  const { data:session, status } = useSession();
 
   return (
     <header>
