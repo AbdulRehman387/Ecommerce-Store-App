@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/types/app/[collection]/page.tsx", "app/cart/page.jsx", "app/checkout/page.jsx", "app/page.jsx", "app/orders/page.jsx", "app/collections/[collection]/page.jsx", "middleware.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next/types/app/[collection]/page.tsx", "app/cart/page.jsx", "app/checkout/page.jsx", "app/page.jsx", "app/orders/page.jsx", "app/collections/[collection]/page.jsx", "middleware.js", "app/products/[id]/page.jsx", "components/Navbar/Navbar.jsx"],
   "exclude": ["node_modules"]
 }
