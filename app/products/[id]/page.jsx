@@ -8,21 +8,21 @@ import { MdArrowForward } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { getSession } from 'next-auth/react';
 
-const Page = ({ params }: any) => {
+const Page = ({ params }) => {
   const [products, setProducts] = useState([])
-  const [product, setProduct] = useState<any>()
+  const [product, setProduct] = useState()
   useEffect(() => {
     fetch(`/api/products`)
       .then(res => res.json())
       .then((data) => {
-        const temp1 = data.find((product: any) => product.id === params.id)
+        const temp1 = data.find((product) => product.id === params.id)
         setProduct(temp1)
-        const temp2 = data.filter((product: any) => product.category === temp1.category)
+        const temp2 = data.filter((product) => product.category === temp1.category)
         setProducts(temp2)
       })
   }, [])
 
-const onClickHandler = async (id:any) => {
+const onClickHandler = async (id) => {
     toast.success('Item added to cart', {
       position: "top-right",
       autoClose: 1000, // Closes after 3 seconds
