@@ -9,8 +9,22 @@ import { toast } from 'react-toastify';
 import { getSession } from 'next-auth/react';
 
 const Page = ({ params }) => {
-  const [products, setProducts] = useState([])
-  const [product, setProduct] = useState()
+  const [products, setProducts] = useState([{
+    id: "",
+    title: "",
+    image: "",
+    category: "",
+    description: "",
+    price: 0
+  }])
+  const [product, setProduct] = useState({
+    id: "",
+    title: "",
+    image: "",
+    category: "",
+    description: "",
+    price: 0
+  })
   useEffect(() => {
     fetch(`/api/products`)
       .then(res => res.json())
