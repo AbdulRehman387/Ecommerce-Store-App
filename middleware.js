@@ -10,24 +10,19 @@ const doubleProtectedPaths = [
 ];
 
 export async function middleware(req) {
-  const sessionToken = req.cookies.get("__Secure-next-auth.session-token") || req.cookies.get("next-auth.session-token");
-
-  const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET,
-        token: sessionToken,
-      })
-
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   const { pathname } = req.nextUrl;
 
-  if (singleProtectedPaths.includes(pathname)) {
+  // Single protected paths (e.g., /cart, /checkout, /orders)
+  if (singleProtectedPaths.some((path) => pathname.startsWith(path))) {
     if (!token) {
       console.log("User not logged in, redirecting to /login.");
       return NextResponse.redirect(new URL("/Login", req.url));
     }
   }
 
-  if (doubleProtectedPaths.includes(pathname)) {
+  // Double protected paths (e.g., /dashboard/*)
+  if (doubleProtectedPaths.some((path) => pathname.startsWith(path))) {
     if (!token) {
       console.log("User not logged in, redirecting to /login.");
       return NextResponse.redirect(new URL("/Login", req.url));
@@ -38,17 +33,16 @@ export async function middleware(req) {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
+
   return NextResponse.next();
 }
 
+// Matcher for routes
 export const config = {
   matcher: [
     "/cart",
-    "/checkout",
+    "/checkout/:path*",
     "/orders",
-    "/dashboard/orders",
-    "/dashboard/products",
-    "/dashboard/users",
-    "/dashboard/messages",
+    "/dashboard/:path*",
   ],
 };
