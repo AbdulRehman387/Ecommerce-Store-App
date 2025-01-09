@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/react';
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { BiSolidWallet } from 'react-icons/bi';
-
+import ProductLoader from '@/components/ProductLoader/ProductLoader';
 const Page = () => {
   const [products, setProducts] = useState([])
   const { data: session, state } = useSession()
@@ -85,38 +85,45 @@ const Page = () => {
           <p className='text-lg text-[#919191] text-center mobile:text-sm'>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
         </div>
         <div className='grid grid-cols-4 justify-center items-center gap-x-5 gap-y-10 laptop:grid-cols-3 tablet:grid-cols-2 mobile:grid-cols-2 mobile:gap-x-3'>
-          {
-            products?.map((item) => {
-              return (
-                <div key={item.id} className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
-                  <Link href={`/products/${item.id}`} className="relative flex justify-center">
-                    <div><img className="h-[200px] mobile:h-[150px]" src={item.image} alt="Product Image" /></div>
-                    <div className="absolute bottom-0 left-0 bg-red-500 text-white px-3 py-0.5 m-2 rounded-full text-sm">Sale
-                    </div>
-                  </Link>
-                  <div className="p-4 mobile:p-1">
-                    <h3 className="text-lg font-medium mb-2 mobile:text-sm">{item.title.slice(0, 24) + "..."}</h3>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-xl text-gray-800 mobile:text-sm">${item.price}</span>
-                    </div>
-                    <div className='flex flex-col justify-center items-center w-full gap-y-2 mt-4 mobile:relative mobile:bottom-2'>
-                      <button onClick={() => onClickHandler(item.id)} className='bg-white text-black text-base font-medium px-4 py-2 w-full rounded-sm hover:scale-[1.01] duration-150 border border-black mobile:text-sm mobile:py-1.5'>
-                        <div className='flex justify-center items-center gap-x-2'>
-                          <PiShoppingCartSimpleFill className='text-black text-xl mobile:text-lg' />
-                          <p>Add to cart</p>
-                        </div>
-                      </button>
-                      <Link href={`/checkout/${item.id}`} className='bg-black text-white text-base font-medium px-4 py-2 w-full rounded-sm hover:scale-[1.01] duration-150 mobile:text-sm mobile:py-1.5'>
-                        <div className='flex justify-center items-center gap-x-2'>
-                          <BiSolidWallet className='text-white text-xl mobile:text-lg' />
-                          <p>Buy now</p>
-                        </div>
-                      </Link>
-                    </div>
+
+          {products.length !== 0 ? (products?.map((item) => {
+            return (
+              <div key={item.id} className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
+                <Link href={`/products/${item.id}`} className="relative flex justify-center">
+                  <div><img className="h-[200px] mobile:h-[150px]" src={item.image} alt="Product Image" /></div>
+                  <div className="absolute bottom-0 left-0 bg-red-500 text-white px-3 py-0.5 m-2 rounded-full text-sm">Sale
+                  </div>
+                </Link>
+                <div className="p-4 mobile:p-1">
+                  <h3 className="text-lg font-medium mb-2 mobile:text-sm">{item.title.slice(0, 24) + "..."}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-xl text-gray-800 mobile:text-sm">${item.price}</span>
+                  </div>
+                  <div className='flex flex-col justify-center items-center w-full gap-y-2 mt-4 mobile:relative mobile:bottom-2'>
+                    <button onClick={() => onClickHandler(item.id)} className='bg-white text-black text-base font-medium px-4 py-2 w-full rounded-sm hover:scale-[1.01] duration-150 border border-black mobile:text-sm mobile:py-1.5'>
+                      <div className='flex justify-center items-center gap-x-2'>
+                        <PiShoppingCartSimpleFill className='text-black text-xl mobile:text-lg' />
+                        <p>Add to cart</p>
+                      </div>
+                    </button>
+                    <Link href={`/checkout/${item.id}`} className='bg-black text-white text-base font-medium px-4 py-2 w-full rounded-sm hover:scale-[1.01] duration-150 mobile:text-sm mobile:py-1.5'>
+                      <div className='flex justify-center items-center gap-x-2'>
+                        <BiSolidWallet className='text-white text-xl mobile:text-lg' />
+                        <p>Buy now</p>
+                      </div>
+                    </Link>
                   </div>
                 </div>
-              )
-            })
+              </div>
+            )
+          })) : (
+            <>
+            <ProductLoader />
+            <ProductLoader />
+            <ProductLoader />
+            <ProductLoader />
+            </>
+          )
           }
         </div>
       </section>

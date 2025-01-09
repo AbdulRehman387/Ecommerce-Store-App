@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { PiShoppingCartSimpleFill } from 'react-icons/pi';
 import { BiSolidWallet } from 'react-icons/bi';
+import ProductLoader from '@/components/ProductLoader/ProductLoader'
 
 const Page = ({ params }) => {
   const { data: session, state } = useSession()
@@ -53,7 +54,7 @@ const Page = ({ params }) => {
         </div>
         <div className='grid grid-cols-4 justify-center items-center gap-x-5 gap-y-10 laptop:grid-cols-3 tablet:grid-cols-2 mobile:grid-cols-2 mobile:gap-x-3'>
           {
-            products?.map((item) => {
+            products.length !== 0 ? (products?.map((item) => {
               return (
                 <div key={item.id} className="bg-white w-[300px] overflow-hidden max-w-sm py-5 text-[#5a5757] mobile:w-[45vw] mobile:py-2">
                   <Link href={`/products/${item.id}`} className="relative flex justify-center">
@@ -83,7 +84,14 @@ const Page = ({ params }) => {
                   </div>
                 </div>
               )
-            })
+            })):(
+              <>
+            <ProductLoader />
+            <ProductLoader />
+            <ProductLoader />
+            <ProductLoader />
+            </>
+            )
           }
         </div>
       </section>
