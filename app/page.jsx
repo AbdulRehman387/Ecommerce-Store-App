@@ -11,10 +11,14 @@ const Page = () => {
   const { data: session, state } = useSession()
   useEffect(() => {
     fetch('/api/products', {
+      method: "GET",
       cache: 'no-store',
+      headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY
+      }
     })
       .then(res => res.json())
-      .then(json => setProducts(json))
+      .then(json => {setProducts(json); console.log(process.env.NEXTAUTH_URL)})
   }, [])
 
   const onClickHandler = async (id) => {
@@ -26,6 +30,7 @@ const Page = () => {
       const response = await fetch('/api/cart', {
         method: 'POST',
         headers: {
+          "api-key": process.env.NEXT_PUBLIC_API_KEY,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

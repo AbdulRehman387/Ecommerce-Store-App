@@ -21,6 +21,7 @@ export async function GET(req:any){
         JOIN orders ON order_items."orderId"=orders.id
         JOIN accounts ON orders."userId"=accounts.id
         WHERE accounts.id=$1
+        ORDER BY "orderId" DESC
         `,
         [query]
     )

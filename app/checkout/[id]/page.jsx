@@ -35,7 +35,11 @@ const Checkout = ({ params }) => {
   const fetchProducts = async () => {
     console.log("fetch products");
     const session = await getSession()
-    const res2 = await fetch(`/api/products`)
+    const res2 = await fetch(`/api/products`, {
+      headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY,
+      }
+    })
     let result = await res2.json()
     let temp = result.find((product) => product.id === params.id)
     temp = { ...temp, quantity: 1 }
@@ -73,6 +77,7 @@ const Checkout = ({ params }) => {
           const response = await fetch('/api/orders', {
             method: 'POST',
             headers: {
+              "api-key": process.env.NEXT_PUBLIC_API_KEY,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({

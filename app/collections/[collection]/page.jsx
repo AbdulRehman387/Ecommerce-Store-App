@@ -12,7 +12,11 @@ const Page = ({ params }) => {
   const { data: session, state } = useSession()
   const [products, setProducts] = React.useState([])
   useEffect(() => {
-    fetch('/api/products')
+    fetch('/api/products', {
+      headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY,
+      }
+    })
       .then(res => res.json())
       .then(json => {
         const temp = json.filter((item) => item.category === params.collection)
@@ -29,6 +33,7 @@ const Page = ({ params }) => {
       const response = await fetch('/api/cart', {
         method: 'POST',
         headers: {
+          "api-key": process.env.NEXT_PUBLIC_API_KEY,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

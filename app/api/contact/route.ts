@@ -14,7 +14,7 @@ export async function POST(req: any) {
 export async function GET(req: any) {
     try {
         const connection = await pool.connect()
-        const result = await connection.query("SELECT * FROM messages")
+        const result = await connection.query("SELECT * FROM messages ORDER BY id DESC")
         return Response.json(result.rows)
     } catch (error) {
         return Response.json({ message: error })

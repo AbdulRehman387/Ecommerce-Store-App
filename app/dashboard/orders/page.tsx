@@ -38,6 +38,9 @@ const Orders = (props: any) => {
     const fetchOrders = async () => {
         const res = await fetch(`/api/getOrders`, {
             cache: 'no-store',
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
         });
         const result = await res.json();
         setOrders(result);
@@ -50,6 +53,7 @@ const Orders = (props: any) => {
         const res = await fetch(`/api/updateOrderStatus`, {
             method: 'PUT',
             headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ status: status, orderId: id })
@@ -59,7 +63,11 @@ const Orders = (props: any) => {
     }
 
     const onClickProducts = async (id: any) => {
-        const res = await fetch(`/api/getOrderProducts?orderId=${id}`)
+        const res = await fetch(`/api/getOrderProducts?orderId=${id}`, {
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
+        })
         const result = await res.json()
         setProducts(result)
     }
@@ -68,6 +76,7 @@ const Orders = (props: any) => {
         const response = await fetch(`/api/cancelAllOrders?orderId=${id}`, {
             method: "DELETE",
             headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
                 "Content-Type": "application/json"
             }
         })

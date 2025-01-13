@@ -44,6 +44,9 @@ const Products = (props: any) => {
         const fetchProducts = async () => {
             const res = await fetch(`/api/products`, {
                 cache: 'no-store',
+                headers: {
+                    "api-key": process.env.NEXT_PUBLIC_API_KEY,
+                }
             });
             const result = await res.json()
             setProducts(result)
@@ -73,6 +76,7 @@ const Products = (props: any) => {
                     method: "POST",
                     body: JSON.stringify(finalForm),
                     headers: {
+                        "api-key": process.env.NEXT_PUBLIC_API_KEY,
                         "Content-Type": "application/json"
                     }
                 })
@@ -101,6 +105,9 @@ const Products = (props: any) => {
         setProducts(temp)
         const res = await fetch(`/api/products?productId=${id}`, {
             method: "DELETE",
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
         })
         const result = await res.json()
         toast.success('Product deleted', {

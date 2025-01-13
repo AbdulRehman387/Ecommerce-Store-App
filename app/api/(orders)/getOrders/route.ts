@@ -5,7 +5,7 @@ export async function GET(){
     const connection = await pool.connect()
     const result = await connection.query(
         `
-        SELECT * FROM orders ORDER BY id ASC
+        SELECT * FROM orders ORDER BY id DESC
         `
     )
     return Response.json(result.rows)

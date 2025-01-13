@@ -21,22 +21,35 @@ const Page = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             const session = await getSession()
-            const response = await fetch(`/api/getUserOrders?userId=${session?.user?.id}`)
+            const response = await fetch(`/api/getUserOrders?userId=${session?.user?.id}`, {
+                headers: {
+                    "api-key": process.env.NEXT_PUBLIC_API_KEY,
+                }
+            })
             const result = await response.json()
             setProducts(result)
         }
         fetchProducts()
     }, [])
 
-    const onClickHandler = async (id) => {
-        const temp = products.filter((item) => item.productId !== id ? item : false)
+    const onClickHandler = async (orderId, productId) => {
+        const temp = products.filter((item) => {
+            if(item.orderId === orderId){
+                if(item.productId === productId){
+                    return false
+                }
+                return item
+            }
+            return item
+        })
         setProducts(temp)
         const response = await fetch("/api/cancelOrder", {
             method: "DELETE",
             headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ orderId: products[0].orderId, productId: id })
+            body: JSON.stringify({ orderId: orderId, productId: productId })
         })
         toast.success('Order canceled', {
             position: "top-right",
@@ -96,7 +109,7 @@ const Page = () => {
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>No</AlertDialogCancel>
-                                        <AlertDialogAction onClick={() => onClickHandler(order.productId)}>Yes</AlertDialogAction>
+                                        <AlertDialogAction onClick={() => onClickHandler(order.orderId, order.productId)}>Yes</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

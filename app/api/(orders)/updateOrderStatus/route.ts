@@ -7,7 +7,7 @@ export async function PUT(req:any){
     const result1 = await connection.query(`UPDATE orders SET status=$1 WHERE id=$2`,[body.status,body.orderId])
     const result2 = await connection.query(
         `
-        SELECT * FROM orders ORDER BY id ASC
+        SELECT * FROM orders ORDER BY id DESC
         `
     )
     return Response.json(result2.rows)

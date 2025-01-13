@@ -29,6 +29,7 @@ const Page = () => {
         fetch("/api/signup", {
           method: "POST",
           headers: {
+            "api-key": process.env.NEXT_PUBLIC_API_KEY,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({...user, provider:"credentials", isAdmin:false})
@@ -110,7 +111,7 @@ const Page = () => {
       <div className='mt-4'>
         <p className='text-gray-700'>
           Already have an account?{' '}
-          <Link href="/login" className='text-blue-600 hover:underline'>
+          <Link href="/Login" className='text-blue-600 hover:underline'>
             Log in
           </Link>
         </p>

@@ -11,7 +11,19 @@ const doubleProtectedPaths = [
 
 export async function middleware(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { pathname } = req.nextUrl;
+  const { pathname } = req.nextUrl; 
+  const api_key = req.headers.get("api-key")
+  
+  // API routes protected with API key
+  if (pathname.includes("/api")) {
+    if (pathname.startsWith("/api/auth")) {
+      return NextResponse.next();
+    }
+    else if (!(api_key === process.env.NEXT_PUBLIC_API_KEY)) {
+      console.log("Invalid API key");
+      return Response.json({message: "Invalid API key"})
+    }
+  }
 
   // Single protected paths (e.g., /cart, /checkout, /orders)
   if (singleProtectedPaths.some((path) => pathname.startsWith(path))) {
@@ -44,5 +56,6 @@ export const config = {
     "/checkout/:path*",
     "/orders",
     "/dashboard/:path*",
+    "/api/:path*"
   ],
 };

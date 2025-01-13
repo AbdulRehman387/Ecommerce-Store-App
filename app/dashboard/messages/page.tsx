@@ -16,6 +16,9 @@ const Messages = () => {
         const fetchMessages = async () => {
             const res = await fetch(`/api/contact`, {
                 cache: 'no-store',
+                headers: {
+                    "api-key": process.env.NEXT_PUBLIC_API_KEY,
+                }
             });
             const result = await res.json()
             setMessages(result)
@@ -56,7 +59,7 @@ const Messages = () => {
                                 messages?.map((item: any, i: any) => {
                                     return (
                                         <tr key={i}>
-                                            <td className="px-6 mobile:px-2 py-4 text-base text-gray-500">{item.id}</td>
+                                            <td className="px-6 mobile:px-2 py-4 text-base text-gray-500">{i+1}</td>
                                             <td className="px-6 mobile:px-2 py-4 whitespace-nowrap text-base text-gray-500">{item.date.slice(0, 10)}</td>
                                             <td className="px-6 mobile:px-2 py-4 whitespace-nowrap text-base text-gray-500">{item.name}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500">{item.email}</td>

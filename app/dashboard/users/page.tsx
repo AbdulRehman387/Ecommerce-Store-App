@@ -33,6 +33,9 @@ const Users = (props: any) => {
     const fetchUsers = async () => {
         const res = await fetch(`/api/getUsers`, {
             cache: 'no-store',
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
         });
         const result = await res.json();
         setUsers(result);
@@ -59,6 +62,7 @@ const Users = (props: any) => {
                 fetch("/api/signup", {
                     method: "POST",
                     headers: {
+                        "api-key": process.env.NEXT_PUBLIC_API_KEY,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({ ...form, provider: "credentials" })
@@ -89,12 +93,20 @@ const Users = (props: any) => {
     }
 
     const onClickOrders = async (id: any) => {
-        const res = await fetch(`/api/getUserOrders2?userId=${id}`)
+        const res = await fetch(`/api/getUserOrders2?userId=${id}`, {
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
+        })
         const result = await res.json()
         setOrders(result)
     }
     const onClickCart = async (id: any) => {
-        const res = await fetch(`/api/getUserCart?userId=${id}`)
+        const res = await fetch(`/api/getUserCart?userId=${id}`, {
+            headers: {
+                "api-key": process.env.NEXT_PUBLIC_API_KEY,
+            }
+        })
         const result = await res.json()
         setCart(result)
     }
@@ -164,9 +176,9 @@ const Users = (props: any) => {
                                                                             {item.email}
                                                                         </td>
                                                                     </tr>
-                                                                    <tr className='mobile:text-lg' style={{ display: item.password ? '' : "none", overflowWrap: "anywhere" }}>
+                                                                    <tr className='mobile:text-lg' style={{ display: item.password ? '' : "none"}}>
                                                                         <th className="pr-4 text-gray-800 font-semibold align-top">Password:</th>
-                                                                        <td>{item.password}</td>
+                                                                        <td style={{overflowWrap: "anywhere"}}>{item.password}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th className="pr-4 text-gray-800 font-semibold align-top mobile:text-lg">Role:</th>

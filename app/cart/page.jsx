@@ -14,7 +14,11 @@ const Cart = () => {
   const fetchProducts = async () => {
     console.log("fetch products");
     const session = await getSession()
-    const res2 = await fetch(`/api/cart?userId=${session?.user?.id}`)
+    const res2 = await fetch(`/api/cart?userId=${session?.user?.id}`, {
+      headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY,
+      }
+    })
     const result = await res2.json()
     console.log(result);
 
@@ -44,6 +48,7 @@ const Cart = () => {
     const response = await fetch('/api/cart', {
       method: 'DELETE',
       headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

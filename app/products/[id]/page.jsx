@@ -27,7 +27,11 @@ const Page = ({ params }) => {
     price: 0
   })
   useEffect(() => {
-    fetch(`/api/products`)
+    fetch(`/api/products`, {
+      headers: {
+        "api-key": process.env.NEXT_PUBLIC_API_KEY,
+      }
+    })
       .then(res => res.json())
       .then((data) => {
         const temp1 = data.find((product) => product.id === params.id)
@@ -46,6 +50,7 @@ const onClickHandler = async (id) => {
       const response = await fetch('/api/cart', {
         method: 'POST',
         headers: {
+          "api-key": process.env.NEXT_PUBLIC_API_KEY,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
