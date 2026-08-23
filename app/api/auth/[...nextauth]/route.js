@@ -48,7 +48,7 @@ const handler = NextAuth({
             try {
                 connection = await pool.connect();
 
-                if (account.provider === "github") {
+                if (account?.provider === "github") {
                     console.log(token, " this is the token");
 
                     // Check if user exists
@@ -92,7 +92,7 @@ const handler = NextAuth({
 
                 if (user) {
                     let result;
-                    if (account.provider === "credentials") {
+                    if (account?.provider === "credentials") {
                         result = await connection.query(
                             `SELECT accounts.id, accounts."isAdmin", accounts.provider FROM users
                             JOIN accounts ON accounts."userId" = users.id
@@ -112,10 +112,11 @@ const handler = NextAuth({
                     }
 
                     console.log("Adding additional token information...");
-                    token.provider = account.provider;
+                    token.provider = account?.provider;
                     token.isAdmin = result.rows[0]?.isAdmin;
                     token.id = result.rows[0]?.id;
                 }
+
             } catch (error) {
                 console.error("Error in jwt callback:", error);
             } finally {
